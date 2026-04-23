@@ -1,0 +1,56 @@
+@model TechCorePayroll.Models.PayrollIndexViewModel
+
+@{
+    ViewData["Title"] = "Payroll";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <span class="badge-soft">Payroll Ledger</span>
+        <h1 class="h3 mb-1">Payroll - @Model.Employee.FullName</h1>
+        <div class="text-muted">Daily Rate: @Model.Employee.DailyRate.ToString("C")</div>
+    </div>
+    <div>
+        <a asp-action="Create" asp-route-employeeId="@Model.Employee.EmployeeId" class="btn btn-primary">Add Payroll</a>
+        <a asp-action="Index" class="btn btn-outline-secondary">Back to Payroll</a>
+        <a asp-controller="Employee" asp-action="Index" class="btn btn-outline-secondary">Back to Employees</a>
+    </div>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Days Worked</th>
+            <th>Gross Pay</th>
+            <th>Deduction</th>
+            <th>Net Pay</th>
+            <th class="text-end">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Payrolls.Any())
+        {
+            <tr>
+                <td colspan="6" class="text-muted">No payroll records found.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var payroll in Model.Payrolls)
+            {
+                <tr>
+                    <td>@payroll.Date.ToString("yyyy-MM-dd")</td>
+                    <td>@payroll.DaysWorked</td>
+                    <td>@payroll.GrossPay.ToString("C")</td>
+                    <td>@payroll.Deduction.ToString("C")</td>
+                    <td>@payroll.NetPay.ToString("C")</td>
+                    <td class="text-end">
+                        <a asp-action="Edit" asp-route-id="@payroll.PayrollId" class="btn btn-sm btn-outline-secondary">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@payroll.PayrollId" class="btn btn-sm btn-outline-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

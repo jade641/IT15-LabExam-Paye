@@ -1,0 +1,56 @@
+@model TechCorePayroll.Models.Payroll
+
+@{
+    var employee = ViewBag.Employee as TechCorePayroll.Models.Employee;
+    var dailyRate = employee?.DailyRate ?? 0m;
+    var dailyRateValue = dailyRate.ToString(System.Globalization.CultureInfo.InvariantCulture);
+    ViewData["Title"] = "Create Payroll";
+}
+
+<div class="card">
+    <div class="card-body">
+        <h1 class="h3 mb-3">Create Payroll</h1>
+
+        <div class="mb-3 text-muted">
+            <div>Employee: @employee?.FullName</div>
+            <div>Daily Rate: @dailyRate.ToString("C")</div>
+        </div>
+
+        <form asp-action="Create" method="post" data-payroll-form data-daily-rate="@dailyRateValue">
+            <input type="hidden" asp-for="EmployeeId" />
+            <div class="mb-3">
+                <label asp-for="Date" class="form-label"></label>
+                <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="DaysWorked" class="form-label"></label>
+                <input asp-for="DaysWorked" class="form-control" type="number" min="0" step="1" data-payroll-days-worked />
+                <span asp-validation-for="DaysWorked" class="text-danger"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="Deduction" class="form-label"></label>
+                <input asp-for="Deduction" class="form-control" type="number" min="0" step="0.01" data-payroll-deduction />
+                <span asp-validation-for="Deduction" class="text-danger"></span>
+            </div>
+
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <label class="form-label">Gross Pay</label>
+                    <input class="form-control" value="@Model.GrossPay.ToString("C")" readonly data-payroll-gross-pay />
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Net Pay</label>
+                    <input class="form-control" value="@Model.NetPay.ToString("C")" readonly data-payroll-net-pay />
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a asp-action="Index" asp-route-employeeId="@Model.EmployeeId" class="btn btn-outline-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

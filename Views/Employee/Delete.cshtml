@@ -1,0 +1,34 @@
+@model TechCorePayroll.Models.Employee
+
+@{
+    ViewData["Title"] = "Delete Employee";
+}
+
+<div class="card">
+    <div class="card-body">
+        <h1 class="h3 mb-3">Delete Employee</h1>
+
+        <div class="alert alert-warning">
+            Deleting this employee will also delete any payroll records linked to them.
+        </div>
+
+        <dl class="row">
+            <dt class="col-sm-3">First Name</dt>
+            <dd class="col-sm-9">@Model.FirstName</dd>
+            <dt class="col-sm-3">Last Name</dt>
+            <dd class="col-sm-9">@Model.LastName</dd>
+            <dt class="col-sm-3">Position</dt>
+            <dd class="col-sm-9">@Model.Position</dd>
+            <dt class="col-sm-3">Department</dt>
+            <dd class="col-sm-9">@Model.Department</dd>
+            <dt class="col-sm-3">Daily Rate</dt>
+            <dd class="col-sm-9">@Model.DailyRate.ToString("C")</dd>
+        </dl>
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="EmployeeId" />
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,52 @@
+@model IEnumerable<TechCorePayroll.Models.Employee>
+
+@{
+    ViewData["Title"] = "Employees";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+        <span class="badge-soft">Directory</span>
+        <h1 class="h3 mb-0">Employees</h1>
+    </div>
+    <a asp-action="Create" class="btn btn-primary">Add Employee</a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Position</th>
+            <th>Department</th>
+            <th>Daily Rate</th>
+            <th class="text-end">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (!Model.Any())
+        {
+            <tr>
+                <td colspan="6" class="text-muted">No employees found.</td>
+            </tr>
+        }
+        else
+        {
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.FirstName</td>
+                    <td>@item.LastName</td>
+                    <td>@item.Position</td>
+                    <td>@item.Department</td>
+                    <td>@item.DailyRate.ToString("C")</td>
+                    <td class="text-end">
+                        <a asp-controller="Payroll" asp-action="Index" asp-route-employeeId="@item.EmployeeId" class="btn btn-sm btn-outline-primary">Payrolls</a>
+                        <a asp-action="Edit" asp-route-id="@item.EmployeeId" class="btn btn-sm btn-outline-secondary">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.EmployeeId" class="btn btn-sm btn-outline-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
